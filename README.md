@@ -10,6 +10,23 @@ O projeto foi criado durante o evento na Trilha Ignite e consiste em um sistema 
 - React / Next.js
 - React Native / Expo
 
+### Init Server and Web
+
+```
+npm run dev
+```
+
+- Server: `http://localhost:3333/` 
+- Web: `http://localhost:3000`
+
+### Init Mobile
+
+```
+npx expo start
+```
+
+Obs. Windows 10: Caso ocorram problemas para conectar o app, verificar firewall e desabilitá-lo.
+
 ## Utils
 
 - **Prisma**
