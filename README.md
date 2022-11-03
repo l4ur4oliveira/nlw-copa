@@ -5,10 +5,10 @@ O projeto foi criado durante o evento na Trilha Ignite e consiste em um sistema 
 ## Stack
 
 - Node.js
-- React
-- React Native
 - Fastify
 - Prisma
+- React / Next.js
+- React Native / Expo
 
 ## Utils
 
