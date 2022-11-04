@@ -4,6 +4,7 @@ import usersExample from '../assets/users-example.png'
 import logo from '../assets/logo.svg'
 import iconCheck from '../assets/icon-check.svg'
 import { api } from '../lib/axios'
+import { FormEvent, useState } from 'react'
 
 interface HomeProps {
   poolCount: number;
@@ -12,13 +13,37 @@ interface HomeProps {
 }
 
 export default function Home(props: HomeProps) {
+  const [ poolTitle, setPoolTitle ] = useState('')
+
+  async function createPool(event: FormEvent) {
+    event.preventDefault()
+
+    try {
+      const response = await api.post('/pools', {
+        title: poolTitle
+      })
+
+      const { code } = response.data
+
+      await navigator.clipboard.writeText(code)
+
+      alert('Bolão criado com sucesso! Código copiado para a área de transferência.')
+
+      setPoolTitle('')
+    } catch (err) {
+      console.log(err);
+      alert('Falha ao criar o bolão! Tente novamente mais tarde.')
+    }
+  }
+  
   return (
     <div className='max-w-[1124px] h-screen mx-auto grid grid-cols-2 gap-28 items-center'>
       <main>
         <Image src={logo} alt="NLW Copa" />
 
         <h1 className='mt-14 text-white text-5xl font-bold leading-tight'>
-          Crie seu próprio bolão da copa e compartilhe entre amigos!</h1>
+          Crie seu próprio bolão da copa e compartilhe entre amigos!
+        </h1>
 
         <div className='mt-10 flex items-center gap-2'>
           <Image src={usersExample} alt="" quality={100} />
@@ -27,12 +52,14 @@ export default function Home(props: HomeProps) {
           </strong>
         </div>
 
-        <form className='mt-10 flex gap-2'>
+        <form onSubmit={createPool} className='mt-10 flex gap-2'>
           <input
             className='flex-1 px-6 py-4 rounded bg-gray-800 border border-gray-600 text-sm text-gray-100'
             type="text"
             required
             placeholder='Qual nome do seu bolão?'
+            onChange={event => setPoolTitle(event.target.value)}
+            value={poolTitle}
           />
           <button
             className='px-6 py-4 rounded bg-yellow-500 text-gray-900 font-bold uppercase text-sm hover:bg-yellow-700 transition-colors'
@@ -77,6 +104,11 @@ export default function Home(props: HomeProps) {
 }
 
 export const getServerSideProps = async () => {
+  /* TODO:
+  /* 
+  /* Optimize API requests using Next getStaticProps()
+  /* 
+  */
   const [ poolCountResponse, guessCountResponse, userCountResponse ] = await Promise.all([
     api.get('pools/count'),
     api.get('guesses/count'),
