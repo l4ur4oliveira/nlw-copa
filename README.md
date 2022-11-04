@@ -7,7 +7,7 @@ O projeto foi criado durante o evento na Trilha Ignite e consiste em um sistema 
 - Node.js
 - Fastify
 - Prisma
-- React / Next.js
+- React / Next.js / Tailwind CSS
 - React Native / Expo
 
 ### Init Server and Web
