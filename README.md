@@ -31,11 +31,12 @@ Obs. Windows 10: Caso ocorram problemas para conectar o app, verificar firewall 
 
 - **Prisma**
 
-Criando migrations e utilizando o Prisma Studio para visualização do BD
+Criando migrations, utilizando o Prisma Studio para visualização do BD e populando BD usando uma seed.
 
 ```
 npx prisma migrate dev
 npx prisma studio
+npx prisma db seed
 ```
 
 ## 🎲 Schema
