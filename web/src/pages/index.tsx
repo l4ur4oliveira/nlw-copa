@@ -3,9 +3,12 @@ import appPreviewImg from '../assets/app-preview.png'
 import usersExample from '../assets/users-example.png'
 import logo from '../assets/logo.svg'
 import iconCheck from '../assets/icon-check.svg'
+import { api } from '../lib/axios'
 
 interface HomeProps {
-  count: number;
+  poolCount: number;
+  guessCount: number;
+  userCount: number;
 }
 
 export default function Home(props: HomeProps) {
@@ -20,13 +23,13 @@ export default function Home(props: HomeProps) {
         <div className='mt-10 flex items-center gap-2'>
           <Image src={usersExample} alt="" quality={100} />
           <strong className='text-gray-100 text-xl'>
-            <span className='text-ignite-500'>+12.592</span> pessoas já estão usando
+            <span className='text-ignite-500'>+{props.userCount}</span> pessoas já estão usando
           </strong>
         </div>
 
         <form className='mt-10 flex gap-2'>
           <input
-            className='flex-1 px-6 py-4 rounded bg-gray-800 border border-gray-600 text-sm'
+            className='flex-1 px-6 py-4 rounded bg-gray-800 border border-gray-600 text-sm text-gray-100'
             type="text"
             required
             placeholder='Qual nome do seu bolão?'
@@ -47,7 +50,7 @@ export default function Home(props: HomeProps) {
           <div className='flex items-center gap-6'>
             <Image src={iconCheck} alt="" />
             <div className='flex flex-col'>
-              <span className='font-bold text-2xl'>+2.034</span>
+              <span className='font-bold text-2xl'>+{props.poolCount}</span>
               <span>Bolões criados</span>
             </div>
           </div>
@@ -57,7 +60,7 @@ export default function Home(props: HomeProps) {
           <div className='flex items-center gap-6'>
             <Image src={iconCheck} alt="" />
             <div className='flex flex-col'>
-              <span className='font-bold text-2xl'>+2.034</span>
+              <span className='font-bold text-2xl'>+{props.guessCount}</span>
               <span>Palpites enviados</span>
             </div>
           </div>
@@ -74,14 +77,17 @@ export default function Home(props: HomeProps) {
 }
 
 export const getServerSideProps = async () => {
-  const response = await fetch('http://localhost:3333/pools/count')
-  const data = await response.json()
+  const [ poolCountResponse, guessCountResponse, userCountResponse ] = await Promise.all([
+    api.get('pools/count'),
+    api.get('guesses/count'),
+    api.get('users/count'),
+  ])
 
-  console.log(data);
-  
   return {
     props : {
-      count: data.count,
+      poolCount: poolCountResponse.data.count,
+      guessCount: guessCountResponse.data.count,
+      userCount: userCountResponse.data.count,
     }
   }
 }
