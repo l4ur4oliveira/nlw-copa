@@ -11,9 +11,9 @@ async function main() {
     }
   })
 
-  const pool = await prisma.pool.create({
+  const poll = await prisma.pool.create({
     data: {
-      title: 'Example Pool',
+      title: 'Example Poll',
       code: 'BOL123',
       ownerId: user.id,
 
@@ -48,7 +48,7 @@ async function main() {
             connect: {
               userId_poolId: {
                 userId: user.id,
-                poolId: pool.id,
+                poolId: poll.id,
               }
             }
           }
