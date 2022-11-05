@@ -18,7 +18,7 @@ async function bootstrap() {
   })
 
   fastify.get('/polls/count', async () => {
-    const count = await prisma.pool.count()
+    const count = await prisma.poll.count()
 
     return { count }
   })
@@ -45,7 +45,7 @@ async function bootstrap() {
     const generate = new ShortUniqueId({ length: 6 })
     const code = String(generate()).toUpperCase()
 
-    await prisma.pool.create({
+    await prisma.poll.create({
       data: {
         title,
         code
