@@ -2,6 +2,7 @@ import { FastifyInstance } from "fastify"
 import ShortUniqueId from "short-unique-id"
 import { z } from "zod"
 import { prisma } from "../lib/prisma"
+import { authenticate } from "../plugins/authenticate"
 
 export async function pollRoutes(fastify: FastifyInstance) {
   fastify.get('/polls/count', async () => {
@@ -20,12 +21,30 @@ export async function pollRoutes(fastify: FastifyInstance) {
     const generate = new ShortUniqueId({ length: 6 })
     const code = String(generate()).toUpperCase()
 
-    await prisma.poll.create({
-      data: {
-        title,
-        code
-      }
-    })
+    try {
+      await authenticate(request)
+
+      await prisma.poll.create({
+        data: {
+          title,
+          code,
+          ownerId: request.user.sub,
+
+          participants: {
+            create: {
+              userId: request.user.sub
+            }
+          }
+        }
+      })
+    } catch {
+      await prisma.poll.create({
+        data: {
+          title,
+          code
+        }
+      })
+    }
 
     return reply.status(201).send({ code })
   })
