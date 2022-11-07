@@ -6,28 +6,28 @@ import { Team } from './Team';
 
 interface GuessProps {
   id: string;
-  gameId: string;
+  matchId: string;
   createdAt: string;
   participantId: string;
-  firstTeamPoints: number;
-  secondTeamPoints: number;
+  homeTeamPoints: number;
+  awayTeamPoints: number;
 }
 
-export interface GameProps {
+export interface MatchProps {
   id: string;
-  firstTeamCountryCode: string;
-  secondTeamCountryCode: string;
+  homeTeamCountryCode: string;
+  awayTeamCountryCode: string;
   guess: null | GuessProps;
 };
 
 interface Props {
-  data: GameProps;
+  data: MatchProps;
   onGuessConfirm: () => void;
-  setFirstTeamPoints: (value: string) => void;
-  setSecondTeamPoints: (value: string) => void;
+  setHomeTeamPoints: (value: string) => void;
+  setAwayTeamPoints: (value: string) => void;
 };
 
-export function Game({ data, setFirstTeamPoints, setSecondTeamPoints, onGuessConfirm }: Props) {
+export function Match({ data, setHomeTeamPoints, setAwayTeamPoints, onGuessConfirm }: Props) {
   const { colors, sizes } = useTheme();
 
   return (
@@ -42,7 +42,7 @@ export function Game({ data, setFirstTeamPoints, setSecondTeamPoints, onGuessCon
       p={4}
     >
       <Text color="gray.100" fontFamily="heading" fontSize="sm">
-        {getName(data.firstTeamCountryCode)} vs. {getName(data.secondTeamCountryCode)}
+        {getName(data.homeTeamCountryCode)} vs. {getName(data.awayTeamCountryCode)}
       </Text>
 
       <Text color="gray.200" fontSize="xs">
@@ -51,17 +51,17 @@ export function Game({ data, setFirstTeamPoints, setSecondTeamPoints, onGuessCon
 
       <HStack mt={4} w="full" justifyContent="space-between" alignItems="center">
         <Team
-          code={data.firstTeamCountryCode}
+          code={data.homeTeamCountryCode}
           position="right"
-          onChangeText={setFirstTeamPoints}
+          onChangeText={setHomeTeamPoints}
         />
 
         <X color={colors.gray[300]} size={sizes[6]} />
 
         <Team
-          code={data.secondTeamCountryCode}
+          code={data.awayTeamCountryCode}
           position="left"
-          onChangeText={setSecondTeamPoints}
+          onChangeText={setAwayTeamPoints}
         />
       </HStack>
 
